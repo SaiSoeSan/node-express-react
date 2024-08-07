@@ -130,6 +130,7 @@ router.post('/login',(req,res) => {
     let loggedIn = false;
     for(let user of users){
         if(user.username == userName && user.password == password){
+            loggedInUser = req.body.username;
             loggedIn = true;
         }
     }
@@ -140,8 +141,17 @@ router.post('/login',(req,res) => {
     }
 })
 
+router.post('/selectCategory',(req,res) => {
+    userHasAccess = myArray[loggedInUser].indexOf(req.body.category) >= 0;
+    if(userHasAccess){
+        res.send(" Welcome to "+req.body.category)
+    }else{
+        res.send("Unauthorized")
+    }
+})
+
 router.get('/view',(req,res) => {
-    res.sendFile(path.join(__dirname,"views","view.html"))
+    res.sendFiles(path.join(__dirname,"views","view.html"))
 })
 
 // router.post('/login',(req,res) => {
@@ -164,9 +174,16 @@ router.get('/view',(req,res) => {
 //     }
 // })
 
+//route not found
 router.use((req,res) => {
     res.send("404")
 })
+
+
+//default error page
+router.use((error,req, res, next) => {
+    res.send(" ERROR")
+});
 
 
 module.exports = router;
