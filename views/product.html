@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product </title>
+    <script>
+        function saveAction(action){
+            document.getElementById('action').value = action;
+        }
+    </script>
+</head>
+<body>
+    <form action="/product/update" method="post">
+        <label for="">Product Name</label>
+        <input type="text" name="productName">
+        <label for="">Product Price</label>
+        <input type="text" name="price">
+        <input type="hidden" id="action" name="action">
+        <button type="submit" onclick="saveAction('add')">Add</button>
+        <button type="submit" onclick="saveAction('edit')">Edit</button>
+        <button type="submit" onclick="saveAction('delete')">Delete</button>
+    </form>
+</body>
+</html>

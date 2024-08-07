@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Form</title>
+</head>
+<body>
+    <form method="POST" action="/post">
+        <label for="">Name</label>
+        <input type="text" name="name"><br>
+        <label for="">Age</label>
+        <input type="text" name="age"><br>
+        <label for="">Gender</label>
+        <input type="radio" name="gender" value="male">Male 
+        <input type="radio" name="gender" value="female">Female
+        <br>
+        <label for="">Country</label>
+        <select multiple name="country" id="">
+            <option value="Myanmar">Myanmar</option>
+            <option value="USA">USA</option>
+            <option value="ca">Canada</option>
+        </select>
+        <br>
+        <label for="">Skills</label>
+        <input type="checkbox" name="skill" value="java">Java
+        <input type="checkbox" name="skill" value="javascript">Javascript
+        <br>
+        <textarea name="description" id="" placeholder="Description">Description</textarea>
+        <br>
+        <select multiple name="options" id="">
+            <optgroup label="sub1">
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+            </optgroup>
+            <optgroup label="sub2">
+                <option value="option3">Option 3</option>
+            </optgroup>
+        </select>
+        <button type="submit">submit</button>
+    </form>
+</body>
+</html>
