@@ -3,6 +3,8 @@ const app = express();
 const PORT = 8000;
 let path = require('path')
 const cors = require('cors');
+const router4 = require('./quiz4-router.js')
+const router3 = require('./quiz3-router.js')
 
 let selectedLanguage = '';
 let selectedData = '';
@@ -19,6 +21,19 @@ let items = [
 { name: 'dddd', price: 30, quantity : 7 }
 ];
 
+let availablity = [
+    {
+        deparatureDate : new Date('2024-08-07'),
+        destination : "Fairfield",
+        availableSeat : 3
+    },
+    {
+        deparatureDate : new Date('2024-08-08'),
+        destination : "Fairfield",
+        availableSeat : 3
+    },
+]
+
 //Use CORS middleware with options
 app.use(cors(corsOptions));
 
@@ -27,40 +42,47 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
-//quiz3
-app.get('/',(req,res) => {
-    res.sendFile(path.join(__dirname,"../client/build/language.html"))
+
+// app.use(router3);
+// app.use(router4);
+
+
+// const updateTicket = (searchTicket) => {
+//     let searchSeat = availablity.find(ticket => {
+//         return ticket.deparatureDate.getTime() == search
+//     })
+// }
+
+app.post('/search/availability',(req,res) => {
+    let selectedDate = new Date(req.body.deparatureDate)
+    let filteredTicket = availablity.filter((item,key) => item.deparatureDate.getTime() === selectedDate.getTime() && item.availableSeat > 0)
+    res.json(filteredTicket)
 })
 
-app.post('/skills',(req,res) => {
-    let language = req.body.language;
-    selectedLanguage = language;
-    if(language == 'Java'){
-        res.sendFile(path.join(__dirname,"../client/build/skillJava.html"))
-    }else{
-        res.sendFile(path.join(__dirname,"../client/build/skillJavascript.html"))
-    }
-});
-
-app.post('/preview',(req,res) => {
-    if(selectedLanguage == 'Java'){
-        selectedData = {
-            "Core Java" : req.body.skill,
-            "Java Build Tools" : req.body.buildTool
+app.post('/book',(req,res) => {
+    let selectedDate = new Date(req.body.deparatureDate) 
+    updateAvailability(req.body)
+    availablity = availablity.map((ticket) => {
+        if(ticket.deparatureDate.getTime() == selectedDate.getTime()){
+            return {...ticket,availableSeat : parseInt(ticket.availableSeat) - req.body.noOfSeat}
         }
-    }else{
-        selectedData = {
-            "HTML / CSS" : req.body.skill,
-            "Source Control" : req.body.buildTool
-        }
-    }
-    console.log(selectedData)
-    res.sendFile(path.join(__dirname,"../client/build/index.html"))
+        return ticket;
+    })
+    let filteredTicket = availablity.filter((item,key) => item.deparatureDate.getTime() === selectedDate.getTime() && item.availableSeat >= 0)
+    res.json(filteredTicket)
 })
 
-app.get('/api/skill',(req,res) => {
-    res.json({data:selectedData})
-})
+const updateAvailability = (bookingTicket) => {
+    
+}
+
+
+// //quiz3
+// app.get('/',(req,res) => {
+//     res.sendFile(path.join(__dirname,"../client/build/language.html"))
+// })
+
+
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
